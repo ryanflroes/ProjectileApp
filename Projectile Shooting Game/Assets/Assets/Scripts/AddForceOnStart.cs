@@ -7,9 +7,25 @@ public class AddForceOnStart : MonoBehaviour
 	public float force = 100.0f;
 	public ForceMode forceMode;
 
+	private Rigidbody rbody;
+
 	// Use this for initialization
 	void Start ()
 	{
-		GetComponent<Rigidbody> ().AddForce (transform.forward * force, forceMode);
+		rbody = GetComponent<Rigidbody> ();
+		rbody.AddForce (transform.forward * force, forceMode);
+//		rbody.velocity;
+	}
+
+	void LateUpdate ()
+	{
+		if (gameObject.active && rbody.velocity != Vector3.zero) {
+			transform.forward = rbody.velocity;	
+		}
+	}
+
+	void OnCollisionEnter ()
+	{
+		gameObject.SetActive (false);
 	}
 }
